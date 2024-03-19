@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Http\Controllers\BaseController;
 use App\Models\calendar;
 use App\Models\disease;
+use App\Models\notification as notification1;
+use App\Models\notification as ModelsNotification;
 use App\Models\patient;
 use App\Models\patient_profile;
 use App\Models\patient_request;
@@ -148,6 +150,11 @@ class AdminService extends BaseController
                 'type' => 'consultation',
             ]);
             $MasterStudentWhoDoneMatchingWithAPatientConsulation = $student_model->MasterStudentWhoDoneMatchingWithAPatientConsulation($moreMasterStudentConsultationNumber->user_id);
+            notification1::create([
+                'sender_id'=>244,
+                'reciver_id'=>$moreMasterStudentConsultationNumber->user_id,
+                'text'=>'There is a patient who wants a consultation, go check your consultations and make an appointment for him please'
+            ]);
             Notification::send(
                 null,
                 new AdminNotification(

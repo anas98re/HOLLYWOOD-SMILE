@@ -23,7 +23,7 @@ class NotificationService extends BaseController
             'text' => $request->text,
         ]);
         $UserReciver=User::where('id',$request->reciver_id)->first();
-
+        // dd($UserReciver->fcm_token);
         Notification::send(
             null,
             new AdminNotification(
@@ -53,7 +53,7 @@ class NotificationService extends BaseController
         $user = auth('sanctum')->user();
         $userSender=User::where('role','Admin')->first();
 
-        $notifications=notification1::where('sender_id',$userSender->id)->where('reciver_id',$user->id)->get();
+        $notifications=notification1::where('sender_id',244)->where('reciver_id',$user->id)->get();
         foreach($notifications as $notification){
             $notification->is_seen=true;
             $notification->save();

@@ -7,6 +7,8 @@ use App\Http\Requests\StorestudentRequest;
 use App\Http\Requests\UpdatestudentRequest;
 use App\Services\StudentService;
 use App\Http\Controllers\BaseController;
+use App\Jobs\Test;
+use App\Models\disease;
 use Illuminate\Http\Request;
 
 class StudentController extends BaseController
@@ -19,8 +21,16 @@ class StudentController extends BaseController
 
     public function getAllStudents()
     {
-        $students = $this->MyServices->getAllStudents();
-        return $this->sendResponse($students, 'All student data has been successfully fetched');
+        $data = [
+            //سنة رابعة - فصل اول
+            ['type' => 'Bachelor_Degree', 'specialization' => null, 'year' => 'fourth', 'Semester' => 'first', 'Department' => 'قسم طب الفم', 'subject' => 'أمراض فم 1', 'clinical_condition' => 'الفحص السريري', 'number' => null]
+        ];
+        disease::insert($data);
+
+        Test::dispatch($data)->delay(now()->addMinutes(1)); 
+        return 1;
+        // $students = $this->MyServices->getAllStudents();
+        // return $this->sendResponse($students, 'All student data has been successfully fetched');
     }
 
     public function patientTransfer(Request $request, $id)
@@ -103,9 +113,9 @@ class StudentController extends BaseController
         return $this->sendResponse($request, 'these are your requests');
     }
 
-    public function ShowClinicalConidition($request1,$request2)
+    public function ShowClinicalConidition($request1, $request2)
     {
-        $ClinicalConidition = $this->MyServices->ShowClinicalConidition($request1,$request2);
+        $ClinicalConidition = $this->MyServices->ShowClinicalConidition($request1, $request2);
         return $this->sendResponse($ClinicalConidition, 'this are ClinicalConiditions');
     }
 }

@@ -123,6 +123,6 @@ class PatientService extends BaseController
     {
         $user = auth('sanctum')->user();
         $patient = $this->patientRepository->where('user_id', $user->id);
-        return calendar::where('type','request')->where('patient_id', $patient->id)->select('student_id')->first();
+        return calendar::where('type','request')->where('patient_id', $patient->id)->with('Students')->first();
     }
 }
